@@ -6,7 +6,7 @@ import json
 #import matplotlib
 import numpy as np
 import os
-
+import time
 
 def getStyleCell(handle,rating,flag=False):
 	if flag:
@@ -45,8 +45,10 @@ class User(object):
 		self.minR = 0
 		self.maxR = 0
 		self.last5 = 0
+		self.lastContestDate = 'no_contest'
+		
 	def prt(self):
-		print("%s,%s,%s,%d,%d,%d,%d,%d"%(self.handle,self.name,self.status,self.cnt,self.cur,self.minR,self.maxR,self.last5))
+		print("%s,%s,%s,%d,%d,%d,%d,%d,%s,%s"%(self.handle,self.name,self.status,self.cnt,self.cur,self.minR,self.maxR,self.last5,self.lastContestDate))
 	def toHtml(self):
 		html = getStyleCell(self.handle,self.cur,True)
 		html = html + '<td>%s</td><td>%s</td><td>%d</td>'%(self.name,self.status,self.cnt)
@@ -54,6 +56,7 @@ class User(object):
 		html = html + getStyleCell(str(self.minR),self.minR)
 		html = html + getStyleCell(str(self.maxR),self.maxR)
 		html = html + getStyleCell(str(self.last5),self.last5)
+		html = html + '<td>%s</td>'%(self.lastContestDate)
 		return html
 
 
@@ -78,6 +81,9 @@ def getUsersRating(users):
 				user.minR = min(ratingList)
 				user.maxR = max(ratingList)
 				user.cur = ratingList[-1]
+				localtime = time.localtime(rating['result'][-1]['ratingUpdateTimeSeconds'])
+				dt = time.strftime('%Y-%m-%d',localtime)
+				user.lastContestDate = dt;
 				if user.cnt >= 5:
 					user.last5 = int(round(np.mean(ratingList[-5:])))
 		else:
@@ -97,7 +103,7 @@ def saveHtml(users,filename):
 		<div>
 			<table id="rating">
 			<tbody>
-				<tr><th>排名</th><th>账号</th><th>姓名</th><th>状态</th><th>场次</th><th>当前</th><th>最低</th><th>最高</th><th>最近5场平均</th></tr>
+				<tr><th>排名</th><th>账号</th><th>姓名</th><th>状态</th><th>场次</th><th>当前</th><th>最低</th><th>最高</th><th>最近5场平均</th><th>最近比赛日期</th></tr>
 	''';
 	fp.write(html_head)
 	rank = 0
