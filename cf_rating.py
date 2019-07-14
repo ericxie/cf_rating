@@ -62,14 +62,31 @@ class User(object):
 
 def getUserRating(handle):
     target = 'http://codeforces.com/api/user.rating?handle='+handle
-    req = requests.get(url=target)
-    rating = json.loads(req.text)
-    return rating
+    flag = False
+    rating = ''
+    try:
+    	req = requests.get(url=target)
+    except Exception as e:
+    	print(e)
+    else:
+    	rating = json.loads(req.text)
+    	flag = True
+    
+    
+    
+    return flag,rating
 
 def getUsersRating(users):
 	for user in users:
 		print("reading infomation:%s,%s"%(user.handle,user.name))
-		rating = getUserRating(user.handle)
+		cnt = 0
+		flag = False
+		while not flag and cnt < 3:
+			flag,rating = getUserRating(user.handle)
+			cnt = cnt + 1
+		if not flag and cnt >= 3:
+			print('Can not read information: %s'%user.handle)
+			continue
 		if rating["status"] == "OK":
 			user.cnt = len(rating["result"])
 			if user.cnt == 0:
