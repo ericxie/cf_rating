@@ -1,15 +1,14 @@
 div {
   width: 100%;
   margin-top: 0px;
-margin-left: 10%}
+margin-left: 5%}
 a {text-decoration: none;
 color: inherit;}
 #rating
   {
   font-family:"Trebuchet MS", Arial, Helvetica, sans-serif;
-  width:80%;
+  width:90%;
   border-collapse:collapse;
-  ali;
   }
 
 #rating td, #rating th 
@@ -31,19 +30,19 @@ color: inherit;}
 
 #rating tr.dark td 
   {
-  background-color:#EAF2D3;
+  background-color:/*#EAF2D3*/#DFF0CB;
   }
 
-#rating td.LGM {	color:#AA0000; }
+#rating span.LGM {	color:#AA0000; }
 #rating span.LGM1{  color:#FFFFFF; }
-#rating td.IGM {	color:#FF3333; }
-#rating td.GM  {	color:#FF7777; }
-#rating td.IM  {	color:#FFBB55; }
-#rating td.M   {	color:#FFCC88; }
-#rating td.CM  {  color:#FF88FF; }
-#rating td.E   {  color:#AAAAFF; }
-#rating td.S   {	color:#77DDBB;}
-#rating td.P   {	color:#77FF77;}
-#rating td.N   {	color:#CCCCCC;}
-#rating td.U   {  color:#000000; }
+#rating span.IGM {	color:#FF3333; }
+#rating span.GM  {	color:#FF7777; }
+#rating span.IM  {	color:#FFBB55; }
+#rating span.M   {	color:#FFCC88; }
+#rating span.CM  {  color:#FF88FF; }
+#rating span.E   {  color:#AAAAFF; }
+#rating span.S   {	color:#77DDBB;}
+#rating span.P   {	color:#77FF77;}
+#rating span.N   {	color:#CCCCCC;}
+#rating span.U   {  color:#000000; }
 
