@@ -86,19 +86,21 @@ def getUserRating(handle):
     	rating = json.loads(req.text)
     	flag = True
     
-    
-    
-    return flag,rating
+    finally:    
+    	return flag,rating
 
 def getUsersRating(users):
 	for user in users:
 		print("reading infomation:%s,%s"%(user.handle,user.name))
 		cnt = 0
 		flag = False
-		while not flag and cnt < 3:
+		while not flag and cnt < 5:
 			flag,rating = getUserRating(user.handle)
 			cnt = cnt + 1
-		if not flag and cnt >= 3:
+			if not flag:
+				time.sleep(1)
+				print('retry read information: %s %d times'%(user.handle,cnt))
+		if cnt >= 5:
 			print('Can not read information: %s'%user.handle)
 			continue
 		if rating["status"] == "OK":

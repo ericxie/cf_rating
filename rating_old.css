@@ -1,0 +1,48 @@
+div {
+  width: 100%;
+  margin-top: 0px;
+margin-left: 5%}
+a {text-decoration: none;
+color: inherit;}
+#rating
+  {
+  font-family:"Trebuchet MS", Arial, Helvetica, sans-serif;
+  width:90%;
+  border-collapse:collapse;
+  }
+
+#rating td, #rating th 
+  {
+  font-size:1em;
+  border:1px solid /*#98bf21*/ #D3D3D3;
+  padding:3px 7px 2px 7px;
+  }
+
+#rating th 
+  {
+  font-size:1.1em;
+  text-align:left;
+  padding-top:5px;
+  padding-bottom:4px;
+  background-color:#A7C942;
+  color:#000000;
+  }
+
+#rating tr.dark td 
+  {
+  background-color:/*#EAF2D3*/#DFF0CB;
+  }
+
+#rating span.LGM {	color:#AA0000; }
+#rating span.LGM1{  color:#FFFFFF; }
+#rating span.IGM {	color:#FF3333; }
+#rating span.GM  {	color:#FF7777; }
+#rating span.IM  {	color:#FFBB55; }
+#rating span.M   {	color:#FFCC88; }
+#rating span.CM  {  color:#FF88FF; }
+#rating span.E   {  color:#AAAAFF; }
+#rating span.S   {	color:#77DDBB;}
+#rating span.P   {	color:#77FF77;}
+#rating span.N   {	color:#CCCCCC;}
+#rating span.U   {  color:#000000; }
+
