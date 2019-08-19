@@ -7,6 +7,7 @@ import json
 import numpy as np
 import os
 import time
+#from math import log10
 
 
 def getStyleRating(rating,text):
@@ -107,8 +108,8 @@ def getUsersRating(users):
 			user.cnt = len(rating["result"])
 			if user.cnt == 0:
 				user.status = 'unrated'
-			elif user.cnt < 5:  
-				user.status = 'insufficient'
+			elif user.cnt < 10:  
+				user.status = 'penalty'
 			if user.cnt > 0 :
 				ratingList = [x['newRating'] for x in rating['result']]			
 				user.minR = min(ratingList)
@@ -120,9 +121,25 @@ def getUsersRating(users):
 				k = min(user.cnt,5)
 				user.ratingChange.append(rating['result'][-k]['oldRating'])
 				user.ratingChange.extend([x['newRating'] for x in rating['result'][-k:]])
-				if user.cnt >= 5:
-					user.last5 = int(round(np.mean(ratingList[-5:])))
-
+				#if user.cnt >= 5:
+				#	user.last5 = int(round(np.mean(ratingList[-5:])))
+				if k == 5 :
+					coffs = np.array([0.9,0.95,1.00,1.05,1.10])
+				elif k == 4:
+					coffs = np.array([.90,.95,1.05,1.10])
+				elif k == 3:
+					coffs = np.array([.95,1.00,1.05])
+				elif k == 2:
+					coffs = np.array([.95,1.05])
+				else:
+					coffs = np.array([1.00])
+				x = np.array(ratingList[-k:])
+				user.last5 = int(round(np.mean(x*coffs)))
+				if user.cnt < 10:
+					coff = (user.cnt + 30) / 40 
+				else:
+					coff = 1.0
+				user.last5 = int(round(user.last5 * coff))
 		else:
 			user.status = 'non-existent'
 
@@ -140,7 +157,7 @@ def saveHtml(users,filename):
 		<div>
 			<table id="rating">
 			<tbody>
-				<tr><th>排名</th><th>账号</th><th>姓名</th><th>状态</th><th>场次</th><th>当前</th><th>最低</th><th>最高</th><th>最近5场/平均</th><th>最近比赛日期</th></tr>
+				<tr><th>排名</th><th>账号</th><th>姓名</th><th>状态</th><th>场次</th><th>当前</th><th>最低</th><th>最高</th><th>最近5场/加权平均</th><th>最近比赛日期</th></tr>
 	''';
 	fp.write(html_head)
 	rank = 0
