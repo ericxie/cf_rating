@@ -140,6 +140,7 @@ def getUsersRating(users):
 				else:
 					coff = 1.0
 				user.last5 = int(round(user.last5 * coff))
+								
 		else:
 			user.status = 'non-existent'
 
@@ -182,7 +183,7 @@ def main():
 	fp.close()
 	getUsersRating(users)
 	users.sort(key=lambda user: (user.last5,user.cur,user.maxR,user.cnt),reverse=True)
-	html_file = "cf_rating.html"
+	html_file = "cf_rating_"+ time.strftime("%Y%m%d%H%M%S", time.localtime()) + ".html"
 	print('Save to html: %s'%html_file)
 	saveHtml(users,html_file)
 	print('Done')
