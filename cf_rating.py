@@ -42,10 +42,13 @@ def getStyleText(handle,rating,flag=False):
 	return text
 
 class User(object):
-	def __init__(self,handle,name):
+	def __init__(self,handle,name,tag):
 		self.handle = handle
 		self.name = name
-		self.status = 'ok'
+		if tag == "0" :
+			self.status = 'retired'
+		else:
+			self.status = 'ok'
 		self.cnt = 0
 		self.cur = 0
 		self.minR = 0
@@ -178,8 +181,8 @@ def main():
 	print("open files:%s"%fp.name)
 	users = []
 	for line in fp.readlines():
-		handle,name = line.split()		
-		users.append(User(handle,name))
+		handle,name,tag = line.split()		
+		users.append(User(handle,name,tag))
 	fp.close()
 	getUsersRating(users)
 	users.sort(key=lambda user: (user.last5,user.cur,user.maxR,user.cnt),reverse=True)
