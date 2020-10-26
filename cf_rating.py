@@ -42,13 +42,11 @@ def getStyleText(handle,rating,flag=False):
 	return text
 
 class User(object):
-	def __init__(self,handle,name,tag):
+	def __init__(self,handle,name,year):
 		self.handle = handle
 		self.name = name
-		if tag == "0" :
-			self.status = 'retired'
-		else:
-			self.status = 'ok'
+		self.year = year
+		self.status = 'ok'
 		self.total_cnt = 0
 		self.cnt = 0
 		self.cur = 0
@@ -67,10 +65,10 @@ class User(object):
 		return text
 
 	def prt(self):
-		print("%s,%s,%s,%d,%d,%d,%d,%d,%d,%s,%s"%(self.handle,self.name,self.status,self.total_cnt,self.cnt,self.cur,self.minR,self.maxR,self.last5,self.lastContestDate))
+		print("%s,%s,%s,%s,%d,%d,%d,%d,%d,%d,%s,%s"%(self.handle,self.name,self.year,self.status,self.total_cnt,self.cnt,self.cur,self.minR,self.maxR,self.last5,self.lastContestDate))
 	def toHtml(self):
 		html = '<td>%s</td>'%getStyleText(self.handle,self.cur,True)
-		html = html + '<td>%s</td><td>%s</td><td>%d</td><td>%d</td>'%(self.name,self.status,self.total_cnt,self.cnt)
+		html = html + '<td>%s</td><td>%s</td><td>%s</td><td>%d</td><td>%d</td>'%(self.name,self.year,self.status,self.total_cnt,self.cnt)
 		html = html + '<td>%s</td>'%getStyleText(str(self.cur),self.cur)
 		html = html + '<td>%s</td>'%getStyleText(str(self.minR),self.minR)
 		html = html + '<td>%s</td>'%getStyleText(str(self.maxR),self.maxR)
@@ -101,6 +99,7 @@ def getUsersRating(users):
 		flag = False
 		while not flag and cnt < 5:
 			flag,rating = getUserRating(user.handle)
+			#print(rating)
 			cnt = cnt + 1
 			if not flag:
 				time.sleep(1)
@@ -110,8 +109,8 @@ def getUsersRating(users):
 			continue
 		if rating["status"] == "OK":
 			user.total_cnt = len(rating["result"])
-## last year
-			start_time = time.time() - 3600 * 24 *365;
+## last 6 months
+			start_time = time.time() - 3600 * 24 * 180;
 			rating["result"] = [x for x in rating["result"] if x['ratingUpdateTimeSeconds'] >= start_time]
 			user.cnt = len(rating["result"])
 			if user.cnt == 0:
@@ -166,7 +165,7 @@ def saveHtml(users,filename):
 		<div>
 			<table id="rating">
 			<tbody>
-				<tr><th>排名</th><th>账号</th><th>姓名</th><th>状态</th><th>总场次</th><th>场次</th><th>当前</th><th>最低</th><th>最高</th><th>最近5场/加权平均</th><th>最近比赛日期</th></tr>
+				<tr><th>排名</th><th>账号</th><th>姓名</th><th>年级</th><th>状态</th><th>总场次</th><th>场次</th><th>当前</th><th>最低</th><th>最高</th><th>最近5场/加权平均</th><th>最近比赛日期</th></tr>
 	''';
 	fp.write(html_head)
 	rank = 0
@@ -186,8 +185,8 @@ def main():
 	print("open files:%s"%fp.name)
 	users = []
 	for line in fp.readlines():
-		handle,name,tag = line.split()		
-		users.append(User(handle,name,tag))
+		handle,name,year = line.split()		
+		users.append(User(handle,name,year))
 	fp.close()
 	getUsersRating(users)
 	users.sort(key=lambda user: (user.last5,user.cur,user.maxR,user.cnt),reverse=True)
