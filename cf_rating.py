@@ -109,14 +109,14 @@ def getUsersRating(users):
 			continue
 		if rating["status"] == "OK":
 			user.total_cnt = len(rating["result"])
-<<<<<<< HEAD
+
 ## last 6 months
 			start_time = time.time() - 3600 * 24 * 180;
-=======
+
 ## last year
 			
-			start_time = time.time() - 3600 * 24 * 365;
->>>>>>> refs/remotes/origin/master
+##			start_time = time.time() - 3600 * 24 * 365;
+
 			rating["result"] = [x for x in rating["result"] if x['ratingUpdateTimeSeconds'] >= start_time]
 			user.cnt = len(rating["result"])
 			if user.cnt == 0:
